@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" />
+        <title>Calculator</title>
+    </head>
+
+    <body>
+	    <script>
+		    function prime(number) {
+			    document.calculator.eredmeny.value = document.calculator.eredmeny.value + number;
+		    }
+		    function answer() {
+			    var a = document.calculator.eredmeny.value;
+			    if (a) {
+			    	document.calculator.eredmeny.value = eval(a)
+			    }
+		    }
+            function power() {
+                var any=document.getElementById("pw").value;
+                var result=any*any;
+                document.getElementById("pw").value=result;
+            }
+            function squar() {
+                var some=document.getElementById("pw").value;
+                var result=Math.sqrt(some);
+                document.getElementById("pw").value=result;
+            }
+            function perc(){
+                var nah=document.getElementById("pw").value;
+                var result=nah/100;
+                document.getElementById("pw").value=result;
+            }
+			function dev() {
+				var devi=document.getElementById("pw").value;
+				var result=1/devi;
+				document.getElementById("pw").value=result;
+			}
+	    </script>
+        <style>
+            table {
+                height: 300px;
+                width: 500px;
+                background-color: powderblue;
+            }
+            input.button {
+                height: 50px;
+                width: 100px;
+                font-size:large;
+            }
+            input.show {
+                height: 50px;
+                width: 500px;
+                font-size: x-large;
+            }
+        </style>
+	    <h2 align="center">Calculator</h2>
+	    <form name="calculator">
+		    <table border="2" align="center">
+			    <tr>
+				    <td colspan="4" align="center" height="50px"><input id="pw" class="show" type="text" name="eredmeny"/></td>
+			    </tr>
+                    <td align="center"><input class="button" type="button" value="^" onclick="power('^')"/></td>
+				    <td align="center"><input class="button" type="button" value="√" onclick="squar('√')"/></td>
+				    <td align="center"><input class="button" type="button" value="%" onclick="perc('%')"/></td>
+					<td align="center"><input class="button" type="button" value="1/x" onclick="dev('')"/></td>
+			    <tr>
+				    <td align="center"><input class="button" type="button" value="1" onclick="prime(1)"/></td>
+				    <td align="center"><input class="button" type="button" value="2" onclick="prime(2)"/></td>
+				    <td align="center"><input class="button" type="button" value="3" onclick="prime(3)"/></td>
+				    <td align="center"><input class="button" type="button" value="+" onclick="prime('+')"/></td>
+			    </tr>
+			    <tr>
+				    <td align="center"><input class="button" type="button" value="4" onclick="prime(4)"/></td>
+				    <td align="center"><input class="button" type="button" value="5" onclick="prime(5)"/></td>
+				    <td align="center"><input class="button" type="button" value="6" onclick="prime(6)"/></td>
+				    <td align="center"><input class="button" type="button" value="-" onclick="prime('-')"/></td>
+			    </tr>
+			    <tr>
+				    <td align="center"><input class="button" type="button" value="7" onclick="prime(7)"/></td>
+				    <td align="center"><input class="button" type="button" value="8" onclick="prime(8)"/></td>
+				    <td align="center"><input class="button" type="button" value="9" onclick="prime(9)"/></td>
+				    <td align="center"><input class="button" type="button" value="*" onclick="prime('*')"/></td>
+			    </tr>
+			    <tr>
+				    <td align="center"><input class="button" type="reset" value="C"/></td>
+				    <td align="center"><input class="button" type="button" value="0" onclick="prime(0)"/></td>
+				    <td align="center"><input class="button" type="button" value="=" onclick="answer()"/></td>
+				    <td align="center"><input class="button" type="button" value="/" onclick="prime('/')"/></td>
+			    </tr>
+		    </table>
+	    </form>
+
+    </body>
+</html>
