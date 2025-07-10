@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <title>To-Do List with Weather</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 20px;
+            color: #333;
+        }
+
+        .container-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .main-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .todo-list-section {
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            font-size: 17px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        li:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+        }
+
+        li span.task-text {
+            flex-grow: 1;
+            cursor: pointer;
+            word-break: break-word;
+        }
+
+        li input[type="text"].edit-mode {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #007bff;
+            border-radius: 3px;
+            font-size: 17px;
+            outline: none;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .input-group {
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .input-group input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .add-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0;
+            width: 50px;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .add-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .weather-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            flex-shrink: 0;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .weather-container span {
+            display: block;
+            font-size: 48px;
+            margin-top: 5px;
+        }
+         .weather-container span:first-child {
+            font-size: 24px;
+            font-weight: normal;
+         }
+
+
+        @media (max-width: 600px) {
+            .container-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-container {
+                max-width: 90%;
+            }
+
+            .weather-container {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="main-container">
+            <h1>To-Do List</h1>
+            <div class="todo-list-section">
+                <ul id="task-list">
+                </ul>
+            </div>
+            <div class="input-group">
+                <input type="text" id="new-task" placeholder="Write down a task...">
+                <button class="add-btn" onclick="addTask()">+</button>
+            </div>
+        </div>
+        <div class="weather-container">
+            <span id="city-name-display">Loading...</span>
+            <span id="temperature"></span>
+        </div>
+    </div>
+
+    <script>
+        function addTask() {
+            const newTaskInput = document.getElementById('new-task');
+            const taskText = newTaskInput.value.trim();
+
+            if (taskText === '') {
+                alert('Please enter a task!');
+                return;
+            }
+
+            const taskList = document.getElementById('task-list');
+
+            const listItem = document.createElement('li');
+            listItem.setAttribute('ondblclick', 'enableEdit(this)');
+
+            listItem.innerHTML = `
+                <span class="task-text">${taskText}</span>
+                <button class="delete-btn" onclick="deleteTask(this)">×</button>
+            `;
+            taskList.appendChild(listItem);
+
+            newTaskInput.value = '';
+        }
+
+        function deleteTask(button) {
+            const listItem = button.closest('li');
+            listItem.remove();
+        }
+
+        function enableEdit(listItem) {
+            const taskSpan = listItem.querySelector('.task-text');
+            const currentText = taskSpan.textContent;
+
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.value = currentText;
+            inputField.classList.add('edit-mode');
+            taskSpan.replaceWith(inputField);
+
+            inputField.focus();
+            inputField.select();
+
+            inputField.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    saveEdit(inputField);
+                }
+            });
+
+            inputField.addEventListener('blur', function() {
+                saveEdit(inputField);
+            });
+        }
+
+        function saveEdit(inputField) {
+            const listItem = inputField.closest('li');
+            const newText = inputField.value.trim();
+
+            const newSpan = document.createElement('span');
+            newSpan.classList.add('task-text');
+            newSpan.textContent = newText === '' ? 'Empty Task' : newText;
+
+            inputField.replaceWith(newSpan);
+        }
+
+        async function getTemperature() {
+            const apiKey = '7860db8e8dd2424495b123201250907';
+            const city = 'Stara Zagora';
+
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Weather API error: ${response.status} - ${errorData.error.message}`);
+                }
+                const data = await response.json();
+
+                const cityName = data.location.name;
+                const temperature = Math.round(data.current.temp_c);
+
+                document.getElementById('city-name-display').textContent = cityName;
+                document.getElementById('temperature').textContent = `${temperature}°`;
+
+            } catch (error) {
+                console.error('Could not fetch temperature:', error);
+                document.getElementById('city-name-display').textContent = 'N/A';
+                document.getElementById('temperature').textContent = 'N/A';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', getTemperature);
+    </script>
+</body>
+</html>
